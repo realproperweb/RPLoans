@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R&P Property Loans | Home Loan Application & Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#d71016',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .form-section {
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .progress-bar {
+            height: 6px;
+            transition: width 0.3s ease;
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 5px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #d71016;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .tooltip {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip-container:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xl mr-3">SA</div>
+                <h1 class="text-2xl font-bold text-gray-800">R&P Property <span class="text-primary">Loans</span></h1>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#" class="text-gray-600 hover:text-primary">Home</a>
+                <a href="#" class="text-gray-600 hover:text-primary">About</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Services</a>
+                <a href="#" class="text-gray-600 hover:text-primary">Contact</a>
+            </div>
+            <button class="md:hidden text-gray-600">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-6 border-b">
+                <h2 class="text-2xl font-bold text-gray-800">Home Loan Application</h2>
+                <p class="text-gray-600">Complete this form to apply for a home loan through our agency</p>
+                
+                <div class="mt-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm font-medium text-gray-700">Progress</span>
+                        <span class="text-sm font-medium" id="progress-text">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-primary h-2.5 rounded-full progress-bar" id="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <form id="loan-form" class="p-6">
+                <!-- Personal Information Section -->
+                <div class="form-section active" id="section-personal">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Personal Information</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name*</label>
+                            <input type="text" id="first-name" name="first-name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label for="last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name*</label>
+                            <input type="text" id="last-name" name="last-name" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label for="id-number" class="block text-sm font-medium text-gray-700 mb-1">South African ID Number*</label>
+                            <input type="text" id="id-number" name="id-number" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label for="dob" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth*</label>
+                            <input type="date" id="dob" name="dob" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address*</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number*</label>
+                            <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label for="marital-status" class="block text-sm font-medium text-gray-700 mb-1">Marital Status*</label>
+                        <select id="marital-status" name="marital-status" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            <option value="">Select</option>
+                            <option value="single">Single</option>
+                            <option value="married">Married</option>
+                            <option value="divorced">Divorced</option>
+                            <option value="widowed">Widowed</option>
+                            <option value="cohabiting">Cohabiting</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Do you have any dependents?*</label>
+                        <div class="flex space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="dependents" value="yes" class="text-primary focus:ring-primary" required>
+                                <span class="ml-2">Yes</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="dependents" value="no" class="text-primary focus:ring-primary">
+                                <span class="ml-2">No</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label for="address" class="block text-sm font-medium text-gray-700 mb-1">Residential Address*</label>
+                        <textarea id="address" name="address" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required></textarea>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-end">
+                        <button type="button" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-red-700 transition duration-300 next-section" data-next="financial">Next: Financial Information</button>
+                    </div>
+                </div>
+
+                <!-- Financial Information Section -->
+                <div class="form-section" id="section-financial">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Financial Information</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="employment-status" class="block text-sm font-medium text-gray-700 mb-1">Employment Status*</label>
+                            <select id="employment-status" name="employment-status" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                                <option value="">Select</option>
+                                <option value="employed">Employed (Permanent)</option>
+                                <option value="contract">Contract</option>
+                                <option value="self-employed">Self-Employed</option>
+                                <option value="retired">Retired</option>
+                                <option value="unemployed">Unemployed</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="employer" class="block text-sm font-medium text-gray-700 mb-1">Current Employer</label>
+                            <input type="text" id="employer" name="employer" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                        <div>
+                            <label for="monthly-income" class="block text-sm font-medium text-gray-700 mb-1">Monthly Income (ZAR)*</label>
+                            <input type="number" id="monthly-income" name="monthly-income" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label for="employment-years" class="block text-sm font-medium text-gray-700 mb-1">Years at Current Employment*</label>
+                            <input type="number" id="employment-years" name="employment-years" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label for="other-income" class="block text-sm font-medium text-gray-700 mb-1">Other Monthly Income (ZAR)</label>
+                        <input type="number" id="other-income" name="other-income" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label for="monthly-expenses" class="block text-sm font-medium text-gray-700 mb-1">Estimated Monthly Expenses (ZAR)*</label>
+                        <input type="number" id="monthly-expenses" name="monthly-expenses" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Do you have any existing loans?*</label>
+                        <div class="flex space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="existing-loans" value="yes" class="text-primary focus:ring-primary" required>
+                                <span class="ml-2">Yes</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="existing-loans" value="no" class="text-primary focus:ring-primary">
+                                <span class="ml-2">No</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div id="loan-details-container" class="mt-4 hidden">
+                        <label for="loan-details" class="block text-sm font-medium text-gray-700 mb-1">Loan Details (Amounts and Monthly Payments)</label>
+                        <textarea id="loan-details" name="loan-details" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-between">
+                        <button type="button" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition duration-300 prev-section" data-prev="personal">Previous</button>
+                        <button type="button" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-red-700 transition duration-300 next-section" data-next="property">Next: Property Details</button>
+                    </div>
+                </div>
+
+                <!-- Property Details Section -->
+                <div class="form-section" id="section-property">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Property Details</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="property-type" class="block text-sm font-medium text-gray-700 mb-1">Property Type*</label>
+                            <select id="property-type" name="property-type" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                                <option value="">Select</option>
+                                <option value="house">House</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="townhouse">Townhouse</option>
+                                <option value="vacant-land">Vacant Land</option>
+                                <option value="commercial">Commercial Property</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="property-location" class="block text-sm font-medium text-gray-700 mb-1">Property Location (City/Town)*</label>
+                            <input type="text" id="property-location" name="property-location" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label for="purchase-price" class="block text-sm font-medium text-gray-700 mb-1">Purchase Price (ZAR)*</label>
+                            <input type="number" id="purchase-price" name="purchase-price" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                        <div>
+                            <label for="deposit" class="block text-sm font-medium text-gray-700 mb-1">Deposit Amount (ZAR)*</label>
+                            <input type="number" id="deposit" name="deposit" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label for="property-description" class="block text-sm font-medium text-gray-700 mb-1">Property Description</label>
+                        <textarea id="property-description" name="property-description" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Is this property for investment or personal use?*</label>
+                        <div class="flex space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="property-use" value="personal" class="text-primary focus:ring-primary" required>
+                                <span class="ml-2">Personal Use</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="property-use" value="investment" class="text-primary focus:ring-primary">
+                                <span class="ml-2">Investment</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-between">
+                        <button type="button" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition duration-300 prev-section" data-prev="financial">Previous</button>
+                        <button type="button" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-red-700 transition duration-300 next-section" data-next="loan">Next: Loan Preferences</button>
+                    </div>
+                </div>
+
+                <!-- Loan Preferences Section -->
+                <div class="form-section" id="section-loan">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Loan Preferences</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="loan-term" class="block text-sm font-medium text-gray-700 mb-1">Preferred Loan Term (Years)*</label>
+                            <select id="loan-term" name="loan-term" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                                <option value="">Select</option>
+                                <option value="5">5 Years</option>
+                                <option value="10">10 Years</option>
+                                <option value="15">15 Years</option>
+                                <option value="20">20 Years</option>
+                                <option value="25">25 Years</option>
+                                <option value="30">30 Years</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="interest-type" class="block text-sm font-medium text-gray-700 mb-1">Interest Type*</label>
+                            <select id="interest-type" name="interest-type" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                                <option value="">Select</option>
+                                <option value="fixed">Fixed Rate</option>
+                                <option value="variable">Variable Rate</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label for="bank" class="block text-sm font-medium text-gray-700 mb-1">Preferred Bank (if any)</label>
+                        <select id="bank" name="bank" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="">No Preference</option>
+                            <option value="absa">ABSA</option>
+                            <option value="fnb">First National Bank (FNB)</option>
+                            <option value="standard">Standard Bank</option>
+                            <option value="nedbank">Nedbank</option>
+                            <option value="capitec">Capitec</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Would you like to include bond registration costs in your loan?*</label>
+                        <div class="flex space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="include-costs" value="yes" class="text-primary focus:ring-primary" required>
+                                <span class="ml-2">Yes</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" name="include-costs" value="no" class="text-primary focus:ring-primary">
+                                <span class="ml-2">No</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">How did you hear about us?*</label>
+                        <select id="referral" name="referral" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" required>
+                            <option value="">Select</option>
+                            <option value="friend">Friend/Family</option>
+                            <option value="agent">Real Estate Agent</option>
+                            <option value="online">Online Search</option>
+                            <option value="social">Social Media</option>
+                            <option value="advertisement">Advertisement</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-between">
+                        <button type="button" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition duration-300 prev-section" data-prev="property">Previous</button>
+                        <button type="button" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-red-700 transition duration-300 next-section" data-next="calculator">Next: Loan Calculator</button>
+                    </div>
+                </div>
+
+                <!-- Loan Calculator Section -->
+                <div class="form-section" id="section-calculator">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Loan Calculator</h3>
+                            
+                            <div class="bg-gray-50 p-6 rounded-lg">
+                                <div class="mb-4">
+                                    <label for="calc-loan-amount" class="block text-sm font-medium text-gray-700 mb-2">Loan Amount (ZAR)</label>
+                                    <input type="range" id="calc-loan-amount" name="calc-loan-amount" min="100000" max="10000000" step="50000" value="1500000" class="w-full">
+                                    <div class="flex justify-between mt-1">
+                                        <span class="text-xs text-gray-500">R100,000</span>
+                                        <span class="text-xs text-gray-500">R10,000,000</span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <input type="number" id="calc-loan-amount-input" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="1500000">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="calc-interest-rate" class="block text-sm font-medium text-gray-700 mb-2">Interest Rate (%)</label>
+                                    <input type="range" id="calc-interest-rate" name="calc-interest-rate" min="1" max="20" step="0.1" value="9.5" class="w-full">
+                                    <div class="flex justify-between mt-1">
+                                        <span class="text-xs text-gray-500">1%</span>
+                                        <span class="text-xs text-gray-500">20%</span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <input type="number" id="calc-interest-rate-input" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="9.5">
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <label for="calc-loan-term" class="block text-sm font-medium text-gray-700 mb-2">Loan Term (Years)</label>
+                                    <input type="range" id="calc-loan-term" name="calc-loan-term" min="5" max="30" step="1" value="20" class="w-full">
+                                    <div class="flex justify-between mt-1">
+                                        <span class="text-xs text-gray-500">5</span>
+                                        <span class="text-xs text-gray-500">30</span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <input type="number" id="calc-loan-term-input" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="20">
+                                    </div>
+                                </div>
+                                
+                                <button id="calculate-btn" class="w-full mt-4 px-6 py-3 bg-primary text-white rounded-md hover:bg-red-700 transition duration-300">Calculate Repayments</button>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800 mb-4">Calculation Results</h3>
+                            
+                            <div class="bg-gray-50 p-6 rounded-lg">
+                                <div class="mb-4">
+                                    <h4 class="text-lg font-medium text-gray-700 mb-2">Monthly Repayment</h4>
+                                    <div class="text-3xl font-bold text-primary" id="monthly-repayment">R0.00</div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h4 class="text-lg font-medium text-gray-700 mb-2">Total Interest Payable</h4>
+                                    <div class="text-2xl font-bold text-gray-800" id="total-interest">R0.00</div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h4 class="text-lg font-medium text-gray-700 mb-2">Total Amount Payable</h4>
+                                    <div class="text-2xl font-bold text-gray-800" id="total-payable">R0.00</div>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <h4 class="text-lg font-medium text-gray-700 mb-2">Loan Affordability</h4>
+                                    <div class="flex items-center">
+                                        <div class="w-4 h-4 rounded-full bg-green-500 mr-2" id="affordability-indicator"></div>
+                                        <span class="font-medium" id="affordability-text">Calculating...</span>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mt-1" id="affordability-details">Based on your income and expenses</p>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <h4 class="text-lg font-medium text-gray-700 mb-2">Amortization Summary</h4>
+                                    <div class="h-40 overflow-auto border border-gray-200 rounded-md p-2 bg-white">
+                                        <table class="w-full text-sm">
+                                            <thead>
+                                                <tr class="bg-gray-100">
+                                                    <th class="py-1 px-2 text-left">Year</th>
+                                                    <th class="py-1 px-2 text-right">Principal</th>
+                                                    <th class="py-1 px-2 text-right">Interest</th>
+                                                    <th class="py-1 px-2 text-right">Balance</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="amortization-table">
+                                                <tr>
+                                                    <td colspan="4" class="py-2 text-center text-gray-500">Calculation results will appear here</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex justify-between">
+                        <button type="button" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition duration-300 prev-section" data-prev="loan">Previous</button>
+                        <button type="button" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-red-700 transition duration-300 next-section" data-next="review">Next: Review & Submit</button>
+                    </div>
+                </div>
+
+                <!-- Review & Submit Section -->
+                <div class="form-section" id="section-review">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Review Your Application</h3>
+                    
+                    <div class="bg-gray-50 p-6 rounded-lg mb-6">
+                        <h4 class="text-lg font-medium text-gray-700 mb-3">Application Summary</h4>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h5 class="font-medium text-gray-700">Personal Information</h5>
+                                <div class="mt-2 space-y-1 text-sm text-gray-600" id="review-personal">
+                                    <!-- Filled by JavaScript -->
+                                </div>
+                            </div>
+                            <div>
+                                <h5 class="font-medium text-gray-700">Financial Information</h5>
+                                <div class="mt-2 space-y-1 text-sm text-gray-600" id="review-financial">
+                                    <!-- Filled by JavaScript -->
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-medium text-gray-700">Property Details</h5>
+                                <div class="mt-2 space-y-1 text-sm text-gray-600" id="review-property">
+                                    <!-- Filled by JavaScript -->
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-medium text-gray-700">Loan Preferences</h5>
+                                <div class="mt-2 space-y-1 text-sm text-gray-600" id="review-loan">
+                                    <!-- Filled by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h4 class="text-lg font-medium text-gray-700 mb-3">Loan Calculation</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                <div class="text-sm text-gray-600">Monthly Repayment</div>
+                                <div class="text-xl font-bold text-primary" id="review-monthly-repayment">R0.00</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                <div class="text-sm text-gray-600">Total Interest</div>
+                                <div class="text-xl font-bold text-gray-800" id="review-total-interest">R0.00</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                                <div class="text-sm text-gray-600">Total Payable</div>
+                                <div class="text-xl font-bold text-gray-800" id="review-total-payable">R0.00</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="flex items-start">
+                            <input type="checkbox" id="consent" name="consent" class="mt-1 text-primary focus:ring-primary" required>
+                            <span class="ml-2 text-sm text-gray-700">I hereby consent to SA Property Loans processing my personal information for the purpose of applying for a home loan. I confirm that all information provided is accurate and complete.*</span>
+                        </label>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="flex items-start">
+                            <input type="checkbox" id="marketing" name="marketing" class="mt-1 text-primary focus:ring-primary">
+                            <span class="ml-2 text-sm text-gray-700">I would like to receive marketing communications about property and loan offers from SA Property Loans and its partners.</span>
+                        </label>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button type="button" class="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition duration-300 prev-section" data-prev="calculator">Previous</button>
+                        <button type="submit" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-red-700 transition duration-300">Submit Application</button>
+                    </div>
+                </div>
+
+                <!-- Success Message -->
+                <div class="form-section" id="section-success">
+                    <div class="text-center py-12">
+                        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Application Submitted Successfully!</h3>
+                        <p class="text-gray-600 mb-6">Thank you for your home loan application. One of our loan specialists will contact you within 24 hours to discuss the next steps.</p>
+                        <p class="text-gray-600 mb-8">Your application reference number is: <span class="font-bold text-primary" id="reference-number">SAHL-2023-XXXXXX</span></p>
+                        <button type="button" id="new-application-btn" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-red-700 transition duration-300">Start New Application</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">SA Property Loans</h3>
+                    <p class="text-gray-400">Helping South Africans secure the best home loans for their property purchases since 2010.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Services</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Contact Us</h3>
+                    <ul class="space-y-2 text-gray-400">
+                        <li class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span>123 Main Road, Johannesburg, 2000</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            <span>+27 11 123 4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <span>info@sapropertyloans.co.za</span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Legal</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white">Complaints</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+                <p>&copy; 2023 SA Property Loans. All rights reserved. Registered credit provider NCRCP12345.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form navigation
+            const formSections = document.querySelectorAll('.form-section');
+            const nextButtons = document.querySelectorAll('.next-section');
+            const prevButtons = document.querySelectorAll('.prev-section');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const form = document.getElementById('loan-form');
+            
+            let currentSection = 0;
+            const totalSections = formSections.length - 1; // Excluding success section
+            
+            // Initialize form
+            updateProgress();
+            
+            // Next button click handler
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const nextSectionId = this.getAttribute('data-next');
+                    
+                    // Validate current section before proceeding
+                    if (validateCurrentSection()) {
+                        navigateToSection(nextSectionId);
+                        currentSection++;
+                        updateProgress();
+                        
+                        // If navigating to review section, populate review fields
+                        if (nextSectionId === 'review') {
+                            populateReviewSection();
+                        }
+                    }
+                });
+            });
+            
+            // Previous button click handler
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const prevSectionId = this.getAttribute('data-prev');
+                    navigateToSection(prevSectionId);
+                    currentSection--;
+                    updateProgress();
+                });
+            });
+            
+            // Navigate to specific section
+            function navigateToSection(sectionId) {
+                formSections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === `section-${sectionId}`) {
+                        section.classList.add('active');
+                    }
+                });
+                
+                // Scroll to top of form
+                document.querySelector('.form-section.active').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            
+            // Update progress bar
+            function updateProgress() {
+                const progressPercentage = Math.round((currentSection / totalSections) * 100);
+                progressBar.style.width = `${progressPercentage}%`;
+                progressText.textContent = `${progressPercentage}%`;
+            }
+            
+            // Validate current section before proceeding
+            function validateCurrentSection() {
+                const currentActiveSection = document.querySelector('.form-section.active');
+                const requiredFields = currentActiveSection.querySelectorAll('[required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value) {
+                        field.classList.add('border-red-500');
+                        isValid = false;
+                        
+                        // Add event listener to remove error when field is filled
+                        field.addEventListener('input', function() {
+                            if (this.value) {
+                                this.classList.remove('border-red-500');
+                            }
+                        });
+                    }
+                });
+                
+                if (!isValid) {
+                    alert('Please fill in all required fields before proceeding.');
+                }
+                
+                return isValid;
+            }
+            
+            // Existing loans radio button toggle
+            const existingLoansYes = document.querySelector('input[name="existing-loans"][value="yes"]');
+            const existingLoansNo = document.querySelector('input[name="existing-loans"][value="no"]');
+            const loanDetailsContainer = document.getElementById('loan-details-container');
+            
+            existingLoansYes.addEventListener('change', function() {
+                if (this.checked) {
+                    loanDetailsContainer.classList.remove('hidden');
+                }
+            });
+            
+            existingLoansNo.addEventListener('change', function() {
+                if (this.checked) {
+                    loanDetailsContainer.classList.add('hidden');
+                }
+            });
+            
+            // Loan Calculator functionality
+            const loanAmountSlider = document.getElementById('calc-loan-amount');
+            const loanAmountInput = document.getElementById('calc-loan-amount-input');
+            const interestRateSlider = document.getElementById('calc-interest-rate');
+            const interestRateInput = document.getElementById('calc-interest-rate-input');
+            const loanTermSlider = document.getElementById('calc-loan-term');
+            const loanTermInput = document.getElementById('calc-loan-term-input');
+            const calculateBtn = document.getElementById('calculate-btn');
+            
+            // Sync slider and input values
+            loanAmountSlider.addEventListener('input', function() {
+                loanAmountInput.value = this.value;
+            });
+            
+            loanAmountInput.addEventListener('input', function() {
+                loanAmountSlider.value = this.value;
+            });
+            
+            interestRateSlider.addEventListener('input', function() {
+                interestRateInput.value = this.value;
+            });
+            
+            interestRateInput.addEventListener('input', function() {
+                interestRateSlider.value = this.value;
+            });
+            
+            loanTermSlider.addEventListener('input', function() {
+                loanTermInput.value = this.value;
+            });
+            
+            loanTermInput.addEventListener('input', function() {
+                loanTermSlider.value = this.value;
+            });
+            
+            // Calculate loan repayment
+            calculateBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                calculateLoanRepayment();
+            });
+            
+            // Initial calculation
+            calculateLoanRepayment();
+            
+            function calculateLoanRepayment() {
+                const loanAmount = parseFloat(loanAmountInput.value) || 0;
+                const interestRate = parseFloat(interestRateInput.value) || 0;
+                const loanTerm = parseFloat(loanTermInput.value) || 0;
+                
+                // Monthly interest rate
+                const monthlyRate = interestRate / 100 / 12;
+                
+                // Number of payments
+                const numberOfPayments = loanTerm * 12;
+                
+                // Monthly payment calculation
+                const monthlyPayment = (loanAmount * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -numberOfPayments));
+                
+                // Total interest calculation
+                const totalInterest = (monthlyPayment * numberOfPayments) - loanAmount;
+                
+                // Total amount payable
+                const totalPayable = monthlyPayment * numberOfPayments;
+                
+                // Update UI
+                document.getElementById('monthly-repayment').textContent = formatCurrency(monthlyPayment);
+                document.getElementById('total-interest').textContent = formatCurrency(totalInterest);
+                document.getElementById('total-payable').textContent = formatCurrency(totalPayable);
+                
+                // Update review section
+                document.getElementById('review-monthly-repayment').textContent = formatCurrency(monthlyPayment);
+                document.getElementById('review-total-interest').textContent = formatCurrency(totalInterest);
+                document.getElementById('review-total-payable').textContent = formatCurrency(totalPayable);
+                
+                // Check affordability (simplified)
+                checkAffordability(monthlyPayment);
+                
+                // Generate amortization table
+                generateAmortizationTable(loanAmount, monthlyRate, numberOfPayments, monthlyPayment);
+            }
+            
+            function formatCurrency(amount) {
+                return 'R' + amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            }
+            
+            function checkAffordability(monthlyPayment) {
+                // Simplified affordability check (would normally use the financial info from the form)
+                const monthlyIncome = parseFloat(document.getElementById('monthly-income').value) || 0;
+                const monthlyExpenses = parseFloat(document.getElementById('monthly-expenses').value) || 0;
+                
+                const disposableIncome = monthlyIncome - monthlyExpenses;
+                const affordabilityRatio = monthlyPayment / monthlyIncome;
+                
+                const indicator = document.getElementById('affordability-indicator');
+                const text = document.getElementById('affordability-text');
+                const details = document.getElementById('affordability-details');
+                
+                if (monthlyIncome === 0) {
+                    text.textContent = 'Enter income to check affordability';
+                    indicator.className = 'w-4 h-4 rounded-full bg-gray-400 mr-2';
+                    details.textContent = 'Please provide your financial information';
+                    return;
+                }
+                
+                if (affordabilityRatio < 0.25) {
+                    text.textContent = 'Very Affordable';
+                    indicator.className = 'w-4 h-4 rounded-full bg-green-500 mr-2';
+                    details.textContent = `Your loan repayment is ${(affordabilityRatio * 100).toFixed(1)}% of your income`;
+                } else if (affordabilityRatio < 0.35) {
+                    text.textContent = 'Affordable';
+                    indicator.className = 'w-4 h-4 rounded-full bg-green-300 mr-2';
+                    details.textContent = `Your loan repayment is ${(affordabilityRatio * 100).toFixed(1)}% of your income`;
+                } else if (affordabilityRatio < 0.45) {
+                    text.textContent = 'Moderate';
+                    indicator.className = 'w-4 h-4 rounded-full bg-yellow-500 mr-2';
+                    details.textContent = `Your loan repayment is ${(affordabilityRatio * 100).toFixed(1)}% of your income - consider a smaller loan`;
+                } else {
+                    text.textContent = 'Not Affordable';
+                    indicator.className = 'w-4 h-4 rounded-full bg-red-500 mr-2';
+                    details.textContent = `Your loan repayment is ${(affordabilityRatio * 100).toFixed(1)}% of your income - too high`;
+                }
+            }
+            
+            function generateAmortizationTable(loanAmount, monthlyRate, numberOfPayments, monthlyPayment) {
+                let balance = loanAmount;
+                let tableHTML = '';
+                
+                // Generate summary for each year
+                for (let year = 1; year <= Math.ceil(numberOfPayments / 12); year++) {
+                    let yearInterest = 0;
+                    let yearPrincipal = 0;
+                    const paymentsInYear = (year * 12 > numberOfPayments) ? numberOfPayments % 12 : 12;
+                    
+                    for (let month = 1; month <= paymentsInYear; month++) {
+                        const interestForMonth = balance * monthlyRate;
+                        const principalForMonth = monthlyPayment - interestForMonth;
+                        
+                        yearInterest += interestForMonth;
+                        yearPrincipal += principalForMonth;
+                        balance -= principalForMonth;
+                    }
+                    
+                    tableHTML += `
+                        <tr class="${year % 2 === 0 ? 'bg-gray-50' : 'bg-white'}">
+                            <td class="py-1 px-2">${year}</td>
+                            <td class="py-1 px-2 text-right">${formatCurrency(yearPrincipal)}</td>
+                            <td class="py-1 px-2 text-right">${formatCurrency(yearInterest)}</td>
+                            <td class="py-1 px-2 text-right">${formatCurrency(balance)}</td>
+                        </tr>
+                    `;
+                }
+                
+                document.getElementById('amortization-table').innerHTML = tableHTML;
+            }
+            
+            // Populate review section
+            function populateReviewSection() {
+                // Personal Information
+                const personalFields = [
+                    { id: 'first-name', label: 'First Name' },
+                    { id: 'last-name', label: 'Last Name' },
+                    { id: 'id-number', label: 'ID Number' },
+                    { id: 'dob', label: 'Date of Birth', format: (val) => new Date(val).toLocaleDateString() },
+                    { id: 'email', label: 'Email' },
+                    { id: 'phone', label: 'Phone' },
+                    { id: 'marital-status', label: 'Marital Status' },
+                    { name: 'dependents', label: 'Dependents' },
+                    { id: 'address', label: 'Address' }
+                ];
+                
+                populateReviewFields('review-personal', personalFields);
+                
+                // Financial Information
+                const financialFields = [
+                    { id: 'employment-status', label: 'Employment Status' },
+                    { id: 'employer', label: 'Employer' },
+                    { id: 'monthly-income', label: 'Monthly Income', format: formatCurrency },
+                    { id: 'employment-years', label: 'Years Employed' },
+                    { id: 'other-income', label: 'Other Income', format: formatCurrency },
+                    { id: 'monthly-expenses', label: 'Monthly Expenses', format: formatCurrency },
+                    { name: 'existing-loans', label: 'Existing Loans' },
+                    { id: 'loan-details', label: 'Loan Details' }
+                ];
+                
+                populateReviewFields('review-financial', financialFields);
+                
+                // Property Details
+                const propertyFields = [
+                    { id: 'property-type', label: 'Property Type' },
+                    { id: 'property-location', label: 'Location' },
+                    { id: 'purchase-price', label: 'Purchase Price', format: formatCurrency },
+                    { id: 'deposit', label: 'Deposit', format: formatCurrency },
+                    { id: 'property-description', label: 'Description' },
+                    { name: 'property-use', label: 'Property Use' }
+                ];
+                
+                populateReviewFields('review-property', propertyFields);
+                
+                // Loan Preferences
+                const loanFields = [
+                    { id: 'loan-term', label: 'Loan Term', format: (val) => `${val} years` },
+                    { id: 'interest-type', label: 'Interest Type' },
+                    { id: 'bank', label: 'Preferred Bank' },
+                    { name: 'include-costs', label: 'Include Costs' },
+                    { id: 'referral', label: 'Referral Source' }
+                ];
+                
+                populateReviewFields('review-loan', loanFields);
+            }
+            
+            function populateReviewFields(containerId, fields) {
+                const container = document.getElementById(containerId);
+                let html = '';
+                
+                fields.forEach(field => {
+                    let value = '';
+                    
+                    if (field.id) {
+                        const element = document.getElementById(field.id);
+                        if (element) {
+                            value = element.tagName === 'SELECT' 
+                                ? element.options[element.selectedIndex].text 
+                                : element.value;
+                        }
+                    } else if (field.name) {
+                        const selected = document.querySelector(`input[name="${field.name}"]:checked`);
+                        if (selected) {
+                            value = selected.value;
+                        }
+                    }
+                    
+                    if (value) {
+                        if (field.format) {
+                            value = field.format(value);
+                        }
+                        
+                        html += `
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">${field.label}:</span>
+                                <span class="font-medium">${value}</span>
+                            </div>
+                        `;
+                    }
+                });
+                
+                container.innerHTML = html;
+            }
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate consent checkbox
+                const consentCheckbox = document.getElementById('consent');
+                if (!consentCheckbox.checked) {
+                    alert('You must consent to the processing of your personal information to submit the application.');
+                    consentCheckbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+                
+                // Here you would normally send the form data to your server
+                // For this demo, we'll simulate a successful submission
+                
+                // Generate random reference number
+                const refNumber = 'SAHL-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
+                document.getElementById('reference-number').textContent = refNumber;
+                
+                // Show success section
+                navigateToSection('success');
+            });
+            
+            // New application button
+            document.getElementById('new-application-btn').addEventListener('click', function() {
+                // Reset form
+                form.reset();
+                
+                // Hide loan details container if it was shown
+                loanDetailsContainer.classList.add('hidden');
+                
+                // Reset to first section
+                currentSection = 0;
+                navigateToSection('personal');
+                updateProgress();
+                
+                // Recalculate loan
+                calculateLoanRepayment();
+            });
+        });
+    </script>
+</body>
+</html>
