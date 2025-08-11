@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA Property Loans</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .form-section { display: none; }
+        .form-section.active { display: block; animation: fadeIn 0.5s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; }
+        .modal.active { display: flex; justify-content: center; align-items: center; }
+        .modal-content { background: white; border-radius: 0.5rem; width: 90%; max-width: 800px; max-height: 90vh; overflow-y: auto; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-12 h-12 bg-[#d71016] rounded-full flex items-center justify-center text-white font-bold text-xl mr-3">SA</div>
+                <h1 class="text-2xl font-bold text-gray-800">SA Property <span class="text-[#d71016]">Loans</span></h1>
+            </div>
+            <nav class="hidden md:flex space-x-6">
+                <a href="#" class="text-gray-600 hover:text-[#d71016] modal-btn" data-modal="about">About</a>
+                <a href="#" class="text-gray-600 hover:text-[#d71016] modal-btn" data-modal="services">Services</a>
+                <a href="#" class="text-gray-600 hover:text-[#d71016] modal-btn" data-modal="contact">Contact</a>
+            </nav>
+            <button id="mobile-menu-btn" class="md:hidden text-gray-600">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white py-2 px-4 shadow-md">
+            <a href="#" class="block py-2 text-gray-600 hover:text-[#d71016] modal-btn" data-modal="about">About</a>
+            <a href="#" class="block py-2 text-gray-600 hover:text-[#d71016] modal-btn" data-modal="services">Services</a>
+            <a href="#" class="block py-2 text-gray-600 hover:text-[#d71016] modal-btn" data-modal="contact">Contact</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="p-6 border-b">
+                <h2 class="text-2xl font-bold text-gray-800">Home Loan Application</h2>
+                <div class="mt-4">
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm font-medium">Progress</span>
+                        <span class="text-sm font-medium" id="progress-text">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div id="progress-bar" class="bg-[#d71016] h-2 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Sections -->
+            <form id="loan-form" class="p-6">
+                <!-- Section 1: Personal Info -->
+                <div class="form-section active" id="section-personal">
+                    <h3 class="text-xl font-semibold mb-4">Personal Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block mb-1">First Name*</label>
+                            <input type="text" class="w-full p-2 border rounded" required>
+                        </div>
+                        <div>
+                            <label class="block mb-1">Last Name*</label>
+                            <input type="text" class="w-full p-2 border rounded" required>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-end">
+                        <button type="button" class="px-4 py-2 bg-[#d71016] text-white rounded next-btn" data-next="financial">Next</button>
+                    </div>
+                </div>
+
+                <!-- Section 2: Financial Info -->
+                <div class="form-section" id="section-financial">
+                    <h3 class="text-xl font-semibold mb-4">Financial Information</h3>
+                    <div>
+                        <label class="block mb-1">Monthly Income (ZAR)*</label>
+                        <input type="number" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="mt-6 flex justify-between">
+                        <button type="button" class="px-4 py-2 bg-gray-300 rounded prev-btn" data-prev="personal">Back</button>
+                        <button type="button" class="px-4 py-2 bg-[#d71016] text-white rounded next-btn" data-next="property">Next</button>
+                    </div>
+                </div>
+
+                <!-- Section 3: Property Info -->
+                <div class="form-section" id="section-property">
+                    <h3 class="text-xl font-semibold mb-4">Property Details</h3>
+                    <div>
+                        <label class="block mb-1">Property Value (ZAR)*</label>
+                        <input type="number" class="w-full p-2 border rounded" required>
+                    </div>
+                    <div class="mt-6 flex justify-between">
+                        <button type="button" class="px-4 py-2 bg-gray-300 rounded prev-btn" data-prev="financial">Back</button>
+                        <button type="button" class="px-4 py-2 bg-[#d71016] text-white rounded next-btn" data-next="review">Review</button>
+                    </div>
+                </div>
+
+                <!-- Section 4: Review -->
+                <div class="form-section" id="section-review">
+                    <h3 class="text-xl font-semibold mb-4">Review Your Application</h3>
+                    <div class="bg-gray-50 p-4 rounded mb-4">
+                        <h4 class="font-bold mb-2">Application Summary</h4>
+                        <p>Review your information before submitting</p>
+                    </div>
+                    <div class="flex justify-between">
+                        <button type="button" class="px-4 py-2 bg-gray-300 rounded prev-btn" data-prev="property">Back</button>
+                        <button type="submit" class="px-4 py-2 bg-[#d71016] text-white rounded">Submit</button>
+                    </div>
+                </div>
+
+                <!-- Section 5: Success -->
+                <div class="form-section" id="section-success">
+                    <div class="text-center py-8">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-check text-green-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Application Submitted!</h3>
+                        <p class="mb-4">Thank you for your application. We'll contact you shortly.</p>
+                        <button type="button" id="new-application" class="px-4 py-2 bg-[#d71016] text-white rounded">New Application</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white modal-btn" data-modal="privacy">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white modal-btn" data-modal="terms">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Contact</h3>
+                    <p class="text-gray-400">123 Main St, Johannesburg</p>
+                    <p class="text-gray-400">info@sapropertyloans.co.za</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400">
+                <p>&copy; 2023 SA Property Loans</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- About Modal -->
+    <div class="modal" id="about-modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <div class="w-12 h-12 bg-[#d71016] rounded-full flex items-center justify-center text-white text-2xl mb-2">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">About Us</h2>
+                    </div>
+                    <button class="modal-close text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <p>We are a leading real estate loan agency in South Africa.</p>
+                    <p>Our mission is to help clients secure the best possible loans for their property needs.</p>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button class="modal-close px-4 py-2 bg-[#d71016] text-white rounded">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Services Modal -->
+    <div class="modal" id="services-modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <div class="w-12 h-12 bg-[#d71016] rounded-full flex items-center justify-center text-white text-2xl mb-2">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Our Services</h2>
+                    </div>
+                    <button class="modal-close text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-check text-[#d71016] mt-1 mr-2"></i>
+                        <span>Home loan applications</span>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-check text-[#d71016] mt-1 mr-2"></i>
+                        <span>Loan pre-approvals</span>
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button class="modal-close px-4 py-2 bg-[#d71016] text-white rounded">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div class="modal" id="contact-modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <div class="w-12 h-12 bg-[#d71016] rounded-full flex items-center justify-center text-white text-2xl mb-2">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Contact Us</h2>
+                    </div>
+                    <button class="modal-close text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <form class="space-y-4">
+                    <div>
+                        <label class="block mb-1">Name</label>
+                        <input type="text" class="w-full p-2 border rounded">
+                    </div>
+                    <div>
+                        <label class="block mb-1">Email</label>
+                        <input type="email" class="w-full p-2 border rounded">
+                    </div>
+                    <div>
+                        <button type="submit" class="px-4 py-2 bg-[#d71016] text-white rounded">Send</button>
+                    </div>
+                </form>
+                <div class="mt-6 flex justify-end">
+                    <button class="modal-close px-4 py-2 bg-gray-300 rounded">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="modal" id="privacy-modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <div class="w-12 h-12 bg-[#d71016] rounded-full flex items-center justify-center text-white text-2xl mb-2">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Privacy Policy</h2>
+                    </div>
+                    <button class="modal-close text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <p>We respect your privacy and protect your personal information.</p>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button class="modal-close px-4 py-2 bg-[#d71016] text-white rounded">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div class="modal" id="terms-modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <div class="w-12 h-12 bg-[#d71016] rounded-full flex items-center justify-center text-white text-2xl mb-2">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold">Terms of Service</h2>
+                    </div>
+                    <button class="modal-close text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <div class="space-y-4">
+                    <p>By using our services, you agree to our terms and conditions.</p>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button class="modal-close px-4 py-2 bg-[#d71016] text-white rounded">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Modal functionality
+            const modalBtns = document.querySelectorAll('.modal-btn');
+            const modals = document.querySelectorAll('.modal');
+            const closeBtns = document.querySelectorAll('.modal-close');
+            
+            modalBtns.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const modalId = this.getAttribute('data-modal') + '-modal';
+                    document.getElementById(modalId).classList.add('active');
+                });
+            });
+            
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.modal').classList.remove('active');
+                });
+            });
+            
+            modals.forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                    }
+                });
+            });
+
+            // Form navigation
+            const formSections = document.querySelectorAll('.form-section');
+            const nextBtns = document.querySelectorAll('.next-btn');
+            const prevBtns = document.querySelectorAll('.prev-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            const form = document.getElementById('loan-form');
+            const newAppBtn = document.getElementById('new-application');
+            
+            let currentSection = 0;
+            const totalSections = formSections.length - 2; // Exclude success section
+            
+            // Next button click
+            nextBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const nextSectionId = this.getAttribute('data-next');
+                    navigateToSection(nextSectionId);
+                    currentSection++;
+                    updateProgress();
+                });
+            });
+            
+            // Previous button click
+            prevBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const prevSectionId = this.getAttribute('data-prev');
+                    navigateToSection(prevSectionId);
+                    currentSection--;
+                    updateProgress();
+                });
+            });
+            
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                navigateToSection('success');
+            });
+            
+            // New application
+            newAppBtn.addEventListener('click', function() {
+                form.reset();
+                currentSection = 0;
+                navigateToSection('personal');
+                updateProgress();
+            });
+            
+            // Helper functions
+            function navigateToSection(sectionId) {
+                formSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById('section-' + sectionId).classList.add('active');
+            }
+            
+            function updateProgress() {
+                const progress = Math.round((currentSection / totalSections) * 100);
+                progressBar.style.width = progress + '%';
+                progressText.textContent = progress + '%';
+            }
+        });
+    </script>
+</body>
+</html>
